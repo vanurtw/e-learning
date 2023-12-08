@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 
 # Create your models here.
@@ -31,3 +33,9 @@ class Course(models.Model):
 
 class Module(models.Model):
     course = models.ForeignKey(Course, related_name='module_created', on_delete=models.CASCADE)
+
+
+class Content(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='contents')
+
+

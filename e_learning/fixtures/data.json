@@ -1,0 +1,46 @@
+[
+{
+  "model": "course.subject",
+  "pk": 1,
+  "fields": {
+    "title": "Course1",
+    "slug": "course1"
+  }
+},
+{
+  "model": "course.course",
+  "pk": 1,
+  "fields": {
+    "owner": 1,
+    "subject": 1,
+    "title": "mathemate",
+    "slug": "mathemate",
+    "overview": "awd",
+    "created": "2023-12-05T15:12:56.090Z"
+  }
+},
+{
+  "model": "course.course",
+  "pk": 2,
+  "fields": {
+    "owner": 1,
+    "subject": 1,
+    "title": "programming",
+    "slug": "programming",
+    "overview": "awd",
+    "created": "2023-12-05T15:13:10.216Z"
+  }
+},
+{
+  "model": "course.course",
+  "pk": 3,
+  "fields": {
+    "owner": 1,
+    "subject": 1,
+    "title": "phusic",
+    "slug": "phusic",
+    "overview": "awdwad",
+    "created": "2023-12-05T15:13:29.362Z"
+  }
+}
+]
