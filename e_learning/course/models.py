@@ -1,7 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from .fields import OrderFields
 
 
 # Create your models here.
@@ -36,6 +38,42 @@ class Module(models.Model):
 
 
 class Content(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='contents')
+    module = models.ForeignKey(Module, related_name='contents', on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType,
+                                     on_delete=models.CASCADE,
+                                     limit_choices_to={'model__in': (
+                                         'text',
+                                         'video',
+                                         'image',
+                                         'file')})
+    object_id = models.PositiveIntegerField()
+    item = GenericForeignKey('content_type', 'object_id')
 
 
+class BaseContent(models.Model):
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='%(class)s_related')
+    title = models.CharField(max_length=255)
+    created = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.title
+
+
+class Text(BaseContent):
+    content = models.TextField()
+
+
+class File(BaseContent):
+    file = models.FileField(upload_to='files/')
+
+
+class Image(BaseContent):
+    file = models.ImageField(upload_to='image/')
+
+
+class Video(BaseContent):
+    video = models.URLField()
