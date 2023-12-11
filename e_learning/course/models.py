@@ -34,7 +34,16 @@ class Course(models.Model):
 
 
 class Module(models.Model):
+    title = models.CharField(max_length=200)
     course = models.ForeignKey(Course, related_name='module_created', on_delete=models.CASCADE)
+    order = OrderFields(blank=True, for_fields=['course'])
+    description = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f'{self.title}. {self.title}'
 
 
 class Content(models.Model):
@@ -48,6 +57,10 @@ class Content(models.Model):
                                          'file')})
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
+    order = OrderFields(blank=True, for_fields=['module'])
+
+    class Meta:
+        ordering = ['order']
 
 
 class BaseContent(models.Model):
