@@ -25,6 +25,7 @@ class Course(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ['-created']
