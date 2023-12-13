@@ -9,5 +9,6 @@ urlpatterns = [
     path('course/create/', views.CourseCreateView.as_view(), name='course_create'),
     path('course/update/<int:pk>/', views.CourseUpdateView.as_view(), name='course_edit'),
     path('course/delete/<int:pk>/', views.CourseDeleteView.as_view(), name='course_delete'),
+    path('<int:pk>/module/', views.CourseModuleUpdateView.as_view(), name='course_module_update'),
 
 ]
