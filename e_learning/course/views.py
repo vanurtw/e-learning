@@ -1,13 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic.base import View, TemplateResponseMixin
-from .models import Course, Module, Content
+from .models import Course, Module, Content, Subject
+from django.db.models import Count
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .forms import ModuleFormSet
 from django.apps import apps
 from django.forms.models import modelform_factory
+from django.views.generic import DetailView
 
 
 # Create your views here.
@@ -130,3 +132,23 @@ class ModuleContentListView(TemplateResponseMixin, View):
     def get(self, request, id):
         module = get_object_or_404(Module, id=id, course__owner=request.user)
         return self.render_to_response({'module': module})
+
+
+class CourseListView(TemplateResponseMixin, View):
+    model = Course
+    template_name = 'course/home_list.html'
+
+    def get(self, request, subject=None):
+        subjects = Subject.objects.annotate(total_courses=Count('courses'))
+        courses = Course.objects.annotate(total_modules=Count('module_created'))
+        if subject:
+            subject = get_object_or_404(Subject, slug=subject)
+            courses = courses.filter(subject=subject)
+        return self.render_to_response({'subjects': subjects,
+                                        'subject': subject,
+                                        'courses': courses})
+
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'course/detail.html'

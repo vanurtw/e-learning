@@ -3,6 +3,7 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
+    path('', views.CourseListView.as_view(), name='course_list'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='course/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(template_name='course/logout.html'), name='logout'),
     path('course/', views.CourseList.as_view(), name='manage_course_list'),
@@ -18,6 +19,7 @@ urlpatterns = [
          name='module_content_update'),
     path('content/<int:id>/delete/', views.ContentDelete.as_view(), name='module_content_delete'),
     path('module/<int:id>/', views.ModuleContentListView.as_view(), name='module_content_list'),
-
+    path('subject/<slug:subject>/', views.CourseListView.as_view(), name='course_list_subject'),
+    path('<slug:slug>/', views.CourseDetailView.as_view(), name='course_detail'),
 
 ]
