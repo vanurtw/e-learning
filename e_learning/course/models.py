@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.template.loader import render_to_string
+
 from .fields import OrderFields
 
 
@@ -70,6 +72,9 @@ class BaseContent(models.Model):
     title = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
+
+    def render(self):
+        return render_to_string(f'content/{self._meta.model_name}.html', {'item': self})
 
     class Meta:
         abstract = True
