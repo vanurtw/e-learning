@@ -9,7 +9,7 @@
 <div class="contents">
     <h3>Modules</h3>
     <ul id="modules">
-        {% for m in object.modules.all %}
+        {% for m in object.module_created.all %}
         <li data-id="{{ m.id }}" {% if m == module %}class="selected" {% endif %}>
             <a href="{% url 'student_course_detail_module' object.id m.id %}">
             <span>
